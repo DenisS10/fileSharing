@@ -51,7 +51,6 @@ class File extends CI_Controller
     public function download()
     {
         $key = $this->session->keyLink;
-
         $this->Files->getByKey($key);
         //$downloadLink='http://task.by/index.php/File/download/' . $key;
         $this->load->view('header');
