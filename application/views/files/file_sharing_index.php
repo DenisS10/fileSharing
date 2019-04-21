@@ -7,7 +7,8 @@
 <div>
     <form class="" method="post" action="">
         <label>Enter link</label>
-        <input name="file_key">
-        <button class="" >Get file!</button>
+        <input  name="file_key">
+<!--        <img src="">-->
+        <button class="" type="submit" >Get file!</button>
     </form>
 </div>
