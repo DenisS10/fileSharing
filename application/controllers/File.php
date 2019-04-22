@@ -47,7 +47,8 @@ class File extends CI_Controller
             }
             move_uploaded_file($_FILES['userFile']['tmp_name'], $path . '/' . $name . '.' . $ext);
         }
-
+        if (isset($_POST['file_key']))
+            header('location: index.php/File/download');
         // echo '<pre>';
 
         // print_r($_FILES);
@@ -73,24 +74,44 @@ class File extends CI_Controller
         $this->load->view('footer');
         $this->load->model('Files');
         ////////$click =
-      //  $link = 'http://task.by/index.php/File/download/../file_dump/' . '1/e1e7077e05f1066d28d4c9a9f5d86bbed';
+        //  $link = 'http://task.by/index.php/File/download/../file_dump/' . '1/e1e7077e05f1066d28d4c9a9f5d86bbed';
         // $link = 'E:/OpenServer/OSPanel/domains/fileSharing/application/controllers/../file_dump/1/e1e7077e05f1066d28d4c9a9f5d86bbed';
         echo '<pre>';
 
-        if (isset($_POST['file_key'])){
+        if (isset($_POST['file_key'])) {
+            echo 'isset($_POST[\'file_key\']';
             $file_key = $this->input->post('file_key');
-            $this->Files->downloadFile($file_key);
-
-  }
+            //$this->Files->downloadFile($file_key);
+            if (file_exists($file_key)) {
+                // сбрасываем буфер вывода PHP, чтобы избежать переполнения памяти выделенной под скрипт
+                // если этого не сделать файл будет читаться в память полностью!
+                if (ob_get_level()) {
+                    ob_end_clean();
+                }
+                // заставляем браузер показать окно сохранения файла
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=' . basename($file_key));
+                header('Content-Transfer-Encoding: binary');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($file_key));
+                // читаем файл и отправляем его пользователю
+                readfile($file_key);
+                exit;
+            }
+        }
+    }
 //   else {
 //            $fileKey = $this->Files->getKey($link);
 //            $this->Files->downloadFile($fileKey);
 //        }
-        // echo $fileKey;
+    // echo $fileKey;
 
 
 
-    }
+
 //    function file_force_download($file) {
 //        if (file_exists($file)) {
 //            // сбрасываем буфер вывода PHP, чтобы избежать переполнения памяти выделенной под скрипт
