@@ -26,7 +26,7 @@ class Files extends CI_Model
 //        $this->db->set('user_id', $userId)->get_compiled_insert(self::TABLE,FALSE);
 //        $this->db->set('creation_date', $currDate)->get_compiled_insert(self::TABLE,FALSE);
         // var_dump($file);
-        $this->db->query("INSERT INTO `files`(`user_id`, `file_key`,`file_link`,`extension`,`creation_date`,`comment`) values ($userId,'$key','$file','$ext',$currDate,'$comment')");
+        $this->db->query("INSERT INTO `files`(`user_id`, `file_key`,`file_link`,`extension`,`creation_date`,`comment`) values ($userId,'$key','$file.$ext','$ext',$currDate,'$comment')");
 
     }
 
@@ -51,7 +51,8 @@ class Files extends CI_Model
     public function downloadFile($file_key)
     {
         $file_path = $this->getFileByKey($file_key);
-        print_r($file_path);
+        echo $file_path;
+//        print_r($file_path);
         if (file_exists($file_path)) {
             // сбрасываем буфер вывода PHP, чтобы избежать переполнения памяти выделенной под скрипт
             // если этого не сделать файл будет читаться в память полностью!
