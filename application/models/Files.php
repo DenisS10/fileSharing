@@ -61,7 +61,7 @@ class Files extends CI_Model
             }
             // заставляем браузер показать окно сохранения файла
             header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
+            header('Content-Type: image/jpeg');//Content-Type: image/jpeg;
             header('Content-Disposition: attachment; filename=' . basename($file_path));
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');
